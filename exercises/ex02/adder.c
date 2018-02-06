@@ -82,6 +82,23 @@ int convert_value(char *input, int *val) {
 	return 0;
 }
 
+/*
+ * This function adds the elements of an array
+ *
+ * array - the array to add
+ * max - the highest element of the array
+ *
+ * returns the sum of all the elements of an array
+ */
+int add_array(int array[], int max) {
+	int res = 0;
+	int i;
+	for (i = 0; i < max; i++) {
+		res += array[i];
+	}
+	return res;
+}
+
 int main() {
 	int error;
 	int current_num = 0;
@@ -93,6 +110,8 @@ int main() {
 		error = get_input(number);
 		if (error) {
 			if(error == 2) {
+				int res = add_array(num_array, current_num);
+				printf("The value of all the elements of the array is: %d\n", res);	
 				return 0;
 			}
 			puts("Input exceeded length of buffer");
@@ -109,6 +128,6 @@ int main() {
 		}
 		num_array[current_num] = *val;
 		current_num++;
-	}	
+	}
 	return 0;
 }
