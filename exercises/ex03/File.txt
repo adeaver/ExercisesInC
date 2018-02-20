@@ -1,0 +1,6 @@
+.
+..
+a.out
+endswith.c
+ex03.md
+tee.c
