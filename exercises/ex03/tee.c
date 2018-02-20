@@ -20,7 +20,7 @@
  * 0 - no error occurred
  */
 int readNextChar(char *bufferChar) {
-	int bytesRead = read(0, bufferChar, 1);
+	int bytesRead = read(STDIN_FILENO, bufferChar, 1);
 	switch(bytesRead) {
 		case -1:
 			return READ_ERROR;
@@ -69,3 +69,19 @@ int main(int argc, char *argv[]) {
 	int res = fclose(fp);
 	return res;
 }
+
+/*
+ * QUESTION 3
+ *
+ * I think that something that could've gone better was 
+ * thinking about error handling. As it stands right now, there is
+ * a possibility of it erroring out on writing and then returning an
+ * error code of 0 (assuming it successfully closes the file).
+ *
+ * QUESTION 4
+ *
+ * The professional solution uses an entire string, which is probably more
+ * efficient than my solution of reading STDIN character by character.
+ * Although mine requires a lot less thinking about what the buffer could
+ * look like.
+ */
