@@ -7,6 +7,8 @@ student repository.
 
 [Here is a link to the ex03 directory in my repository](https://github.com/adeaver/ExercisesInC/tree/master/exercises/ex03)
 
+[Here is a link to the ex04 directory in my repository](https://github.com/adeaver/ExercisesInC/tree/master/exercises/ex04)
+
 ### Think OS Chapter 4 reading questions
 
 **Files and file systems**
