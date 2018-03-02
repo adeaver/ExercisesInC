@@ -2,16 +2,17 @@
 
 ### C Exercises
 
-Modify the link below so it points to the `ex02.5` directory in your
+Modify the link below so it points to the `ex03` directory in your
 student repository.
 
 [Here is a link to the ex02.5 directory in my repository](https://github.com/adeaver/ExercisesInC/tree/master/exercises/ex02.5)
 
-### Think OS Chapter 3 reading questions
+### Think OS Chapter 4 reading questions
 
-### Virtual memory
+**Files and file systems**
 
-1) The Georgian alphabet has 33 letters.  How many bit are needed to specify a letter?
+1) What abstractions do file systems provide?  Give an example of something that is logically 
+true about files systems but not true of their implementations.
 
 You would need 6 bits to specify a letter in an alphabet consisting of 33 letters. This is because 5 bits would give us `2^5 = 32` which is too few. 6 bits gives us `2^6 = 64`.
 
