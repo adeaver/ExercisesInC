@@ -5,6 +5,9 @@ License: MIT License https://opensource.org/licenses/MIT
 */
 
 #include <stdlib.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 // generate a random float using the algorithm described
 // at http://allendowney.com/research/rand
@@ -75,20 +78,61 @@ float my_random_float2()
     return b.f;
 }
 
+uint64_t rand_64bits() {
+	uint64_t r = 0;
+	for(int i = 0; i < 63; i++) {
+		r <<= 1;
+		r |= rand() % 2;
+	}
+	return r;
+}
+
+void print_binary(uint64_t in) {
+	for(int i = 0; i < 64; i++) {
+		if (in & 1) {
+			printf("1");
+		} else {
+			printf("0");
+		}
+		in >>= 1;
+	}
+	printf("\n");
+}
+
 // compute a random double using my algorithm
 double my_random_double()
 {
-    // TODO: fill this in
-	int x, y, z;
-	int mant;
-	int exp = 2047;
-	int mask = 1;
+	uint64_t r;
+	uint64_t mant;
+	uint64_t exp = 1023;
+	uint64_t mask = 1;
 
+	while(1) {
+		r = rand_64bits();
+		if (r == 0) {
+			exp -= 31;
+		} else {
+			break;
+		}
+	}
+	
+	while (r && mask) {
+        mask <<= 1;
+        exp--;
+	}
+	mant = r >> 11;
+	
+	// This is definitely not zero
+	// This is always returning the same series of numbers for some reason.
+    uint64_t i = (exp << 52) | mant;
 	union {
 		double d;
-		int i;
-	} b;
-	return 0.0;
+		uint64_t i;
+	} x = { .i = i };
+
+	//print_binary(i);
+	// This always returns 0 for some reason?	
+	return x.d;
 }
 
 // return a constant (this is a dummy function for time trials)

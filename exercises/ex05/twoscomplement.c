@@ -19,5 +19,6 @@ int main() {
 	printf("XOR on x returns %d\n", y);
 	char* str = bitshift_lower("HELLO");
 	printf("The result is %s\n", str);
+	printf("The size of a long is %lu\n", sizeof(long long));
 	return 0;	
 }
