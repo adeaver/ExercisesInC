@@ -79,6 +79,15 @@ float my_random_float2()
 double my_random_double()
 {
     // TODO: fill this in
+	int x, y, z;
+	int mant;
+	int exp = 2047;
+	int mask = 1;
+
+	union {
+		double d;
+		int i;
+	} b;
 	return 0.0;
 }
 
