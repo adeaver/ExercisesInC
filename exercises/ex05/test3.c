@@ -13,7 +13,7 @@ int main (int argc, char *argv[])
 
     for (i=0; i<10000; i++) {
         x = my_random_double();
-        printf ("%f\n", x);
+        printf ("%f\n", x*100);
     }
 
     return 0;

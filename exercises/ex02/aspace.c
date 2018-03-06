@@ -21,7 +21,6 @@ int main ()
     void *p = malloc(27);
 	void *x = malloc(27);
     char *s = "Literal string";
-
     printf ("Address of main is %p\n", main);
     printf ("Address of var1 is %p\n", &var1);
     printf ("Address of var2 is %p\n", &var2);

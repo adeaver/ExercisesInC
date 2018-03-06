@@ -105,7 +105,7 @@ double my_random_double()
 {
 	uint64_t r;
 	uint64_t mant;
-	uint64_t exp = 1090;
+	uint64_t exp = 1085; // This value needed a lot of figeting, is that by design?
 	uint64_t mask = 1;
 
 	while(1) {
