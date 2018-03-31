@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <regex.h>
+#include <glib.h>
 
 #define NO_ERROR 0
 #define ERROR 1
@@ -65,35 +66,51 @@ int count_words(char *str) {
 	return word_count;
 }
 
-char** split_words(char *str) {
-	int word_count = count_words(str);
-	char **words = malloc(sizeof(char*) * word_count);
-	int j = 0;
-	printf("%s\n", str);
+void split_words(char *str, GHashTable *hash) {
 	char* word = strtok(str, " ");
+	gpointer gpoint;
+	int i;
 	while(word != NULL) {
-		if (word[0] >= 97) {
-			words[j] = word;
-			j++;
+		gpoint = g_hash_table_lookup(hash, word);
+		if(gpoint != NULL) {
+			i = *((int*) gpoint);
+			i++;	
+		} else {
+			i = 1;
 		}
+		gpoint = &i;
+		g_hash_table_insert(hash, word, gpoint);
 		word = strtok(NULL, " ");
 	}	
-	return words;
 }
 
-char** get_words(FILE *file, int *status) {
+void get_words(FILE *file, int *status, GHashTable *hash) {
 	char* line = read_line(file, status);
 	char* cleaned_line = clean_string(line);
-	return split_words(cleaned_line);
+	split_words(cleaned_line, hash);
+}
+
+void print_values(GHashTable *hash) {
+	GHashTableIter iter;
+	gpointer key, value;
+
+	g_hash_table_iter_init (&iter, hash);
+	char* word;
+	int frequency;
+	while (g_hash_table_iter_next (&iter, &key, &value)) {
+		word = (char*) key;
+		frequency = *((int*) value);
+		printf("%s occurs %d times\n", word, frequency);
+	}
 }
 
 int main() {
 	int status = regcomp(&punctuation_regex, punctuation, REG_EXTENDED);
 	FILE *metamorphosis = fopen("./metamorphosis.txt", "rb");
-	char **words;
-	int len;
+	GHashTable* hash = g_hash_table_new(g_str_hash, g_int_equal);
 	while(status == NO_ERROR) {
-		words = get_words(metamorphosis, &status);
-	}	
+		get_words(metamorphosis, &status, hash);
+	}
+	print_values(hash);
 	return 0;
 }
