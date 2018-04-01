@@ -5,7 +5,7 @@
 Modify the link below so it points to the `ex07` directory in your
 student repository.
 
-[Here is a link to the ex07 directory in my repository](https://github.com/YOUR_GITHUB_USERNAME_HERE/ExercisesInC/tree/master/exercises/ex07)
+[Here is a link to the ex07 directory in my repository](https://github.com/adeaver/ExercisesInC/tree/master/exercises/ex07)
 
 ### Think OS Chapter 7 reading questions
 
