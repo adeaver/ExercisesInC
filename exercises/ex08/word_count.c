@@ -68,18 +68,19 @@ int count_words(char *str) {
 
 void split_words(char *str, GHashTable *hash) {
 	char* word = strtok(str, " ");
-	gpointer gpoint;
-	int i;
+	gpointer value = NULL;
+	int *i;
 	while(word != NULL) {
-		gpoint = g_hash_table_lookup(hash, word);
-		if(gpoint != NULL) {
-			i = *((int*) gpoint);
-			i++;	
+		value = g_hash_table_lookup(hash, word);
+		if(value != NULL) {
+			i = (int*) value;
+			*i = *i + 1;
 		} else {
-			i = 1;
+			i = malloc(sizeof(int));
+			*i = 1;
 		}
-		gpoint = &i;
-		g_hash_table_insert(hash, word, gpoint);
+		value = i;
+		g_hash_table_insert(hash, word, value);
 		word = strtok(NULL, " ");
 	}	
 }
@@ -92,8 +93,7 @@ void get_words(FILE *file, int *status, GHashTable *hash) {
 
 void print_values(GHashTable *hash) {
 	GHashTableIter iter;
-	gpointer key, value;
-
+	gpointer key, value; 
 	g_hash_table_iter_init (&iter, hash);
 	char* word;
 	int frequency;
@@ -107,10 +107,12 @@ void print_values(GHashTable *hash) {
 int main() {
 	int status = regcomp(&punctuation_regex, punctuation, REG_EXTENDED);
 	FILE *metamorphosis = fopen("./metamorphosis.txt", "rb");
-	GHashTable* hash = g_hash_table_new(g_str_hash, g_int_equal);
+	GHashTable* hash = g_hash_table_new(g_str_hash, g_str_equal);
 	while(status == NO_ERROR) {
 		get_words(metamorphosis, &status, hash);
 	}
-	print_values(hash);
+
+	print_values(hash);	
+
 	return 0;
 }
