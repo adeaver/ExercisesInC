@@ -12,13 +12,14 @@ License: MIT License https://opensource.org/licenses/MIT
 #include <errno.h>
 #include <sys/time.h>
 #include <sys/types.h>
-#include <wait.h>
+#include <sys/wait.h>
 
 
 // errno is an external global variable that contains
 // error information
 extern int errno;
 
+char* global_test_string;
 
 // get_seconds returns the number of seconds since the
 // beginning of the day, with microsecond precision
@@ -30,21 +31,22 @@ double get_seconds() {
 }
 
 
-void child_code(int i)
-{
+void child_code(int i) {
     sleep(i);
-    printf("Hello from child %d.\n", i);
+    printf("Hello from child %d, Test_String at %p.\n", i, global_test_string);
 }
 
 // main takes two parameters: argc is the number of command-line
 // arguments; argv is an array of strings containing the command
 // line arguments
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     int status;
     pid_t pid;
     double start, stop;
     int i, num_children;
+	char* heap_test_string = malloc(sizeof(char*));
+
+	global_test_string = malloc(sizeof(char*));
 
     // the first command-line argument is the name of the executable.
     // if there is a second, it is the number of children to create.
@@ -78,7 +80,7 @@ int main(int argc, char *argv[])
     }
 
     /* parent continues */
-    printf("Hello from the parent.\n");
+    printf("Hello from the parent. Global test String is %p.\nHeap Test String is %p\n", global_test_string, heap_test_string);
 
     for (i=0; i<num_children; i++) {
         pid = wait(&status);
