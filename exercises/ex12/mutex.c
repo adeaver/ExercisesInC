@@ -16,12 +16,12 @@ Mutex *make_mutex()
     return mutex;
 }
 
-void mutex_lock(Mutex *mutex)
+int mutex_lock(Mutex *mutex)
 {
-    pthread_mutex_lock(mutex->mutex);
+    return pthread_mutex_lock(mutex->mutex);
 }
 
-void mutex_unlock(Mutex *mutex)
+int mutex_unlock(Mutex *mutex)
 {
-    pthread_mutex_unlock(mutex->mutex);
+   return pthread_mutex_unlock(mutex->mutex);
 }
