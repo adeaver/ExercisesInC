@@ -35,6 +35,7 @@ char *advice[] = {
 int main()
 {
     // create the listening socket
+	printf("Port, maybe: %d", SO_REUSEADDR); 
     int listener_d = socket(PF_INET, SOCK_STREAM, 0);
     if (listener_d == -1)
         error("socket failed.");
