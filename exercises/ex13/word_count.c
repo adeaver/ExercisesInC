@@ -36,8 +36,7 @@ void pair_printor(gpointer value, gpointer user_data)
     printf("%d\t %s\n", pair->freq, pair->word);
 }
 
-
-/* Iterator that prints keys and values. */
+/* Iterator that prints keys and values. */ 
 void kv_printor (gpointer key, gpointer value, gpointer user_data)
 {
     printf(user_data, key, *(gint *) value);
@@ -49,13 +48,17 @@ void accumulator(gpointer key, gpointer value, gpointer user_data)
 {
     GSequence *seq = (GSequence *) user_data;
     Pair *pair = g_new(Pair, 1);
-    pair->word = (gchar *) key;
-    pair->freq = *(gint *) value;
+	pair->word = (gchar *) key;
+	pair->freq = *((gint *) value);
 
     g_sequence_insert_sorted(seq,
         (gpointer) pair,
         (GCompareDataFunc) compare_pair,
         NULL);
+}
+
+gboolean remove_key_value(gpointer key, gpointer value, gpointer user_data) {
+	return 1;
 }
 
 /* Increments the frequency associated with key. */
@@ -69,13 +72,13 @@ void incr(GHashTable* hash, gchar *key)
         g_hash_table_insert(hash, key, val1);
     } else {
         *val += 1;
+		g_free(key);
     }
 }
 
 int main(int argc, char** argv)
 {
     gchar *filename;
-
     // open the file
     if (argc > 1) {
         filename = argv[1];
@@ -103,7 +106,7 @@ int main(int argc, char** argv)
         array = g_strsplit(line, " ", 0);
         for (int i=0; array[i] != NULL; i++) {
             incr(hash, array[i]);
-        }
+		}
     }
     fclose(fp);
 
@@ -118,6 +121,7 @@ int main(int argc, char** argv)
     g_sequence_foreach(seq, (GFunc) pair_printor, NULL);
 
     // try (unsuccessfully) to free everything
+	g_hash_table_foreach_remove(hash, (GHRFunc) remove_key_value, NULL);
     g_hash_table_destroy(hash);
     g_sequence_free(seq);
 

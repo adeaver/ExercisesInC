@@ -180,6 +180,17 @@ Node *make_something() {
     return node3;
 }
 
+void free_list(Node *list) {
+	Node *curr = list;
+	Node *next = list->next;
+	free(curr);
+	while(next != NULL) {
+		curr = next;
+		next = curr->next;
+		free(curr);	
+	}
+}
+
 
 int main() {
     // make a list of even numbers
@@ -209,7 +220,8 @@ int main() {
     print_list(&empty);
 
     Node *something = make_something();
-    free(something);
-
+    free_list(something);
+	free_list(test_list);
+	free_list(empty);
     return 0;
 }

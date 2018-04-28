@@ -94,6 +94,10 @@ struct node *rotate_right(struct node* root) {
 struct node *rotate_left(struct node* root) {
     // TODO: fill this in
     // See
+	struct node* pivot = root->right;
+	root->right = pivot->left;
+	pivot->left = root;
+	return pivot;
 }
 
 
