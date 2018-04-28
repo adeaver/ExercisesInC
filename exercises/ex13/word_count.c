@@ -9,7 +9,6 @@ http://www.ibm.com/developerworks/linux/tutorials/l-glib/section5.html
 Note: this version leaks memory.
 
 */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <glib.h>
@@ -34,6 +33,7 @@ void pair_printor(gpointer value, gpointer user_data)
 {
     Pair *pair = (Pair *) value;
     printf("%d\t %s\n", pair->freq, pair->word);
+	g_free(pair);
 }
 
 /* Iterator that prints keys and values. */ 
@@ -62,7 +62,7 @@ gboolean remove_key_value(gpointer key, gpointer value, gpointer user_data) {
 }
 
 /* Increments the frequency associated with key. */
-void incr(GHashTable* hash, gchar *key)
+int incr(GHashTable* hash, gchar *key)
 {
     gint *val = (gint *) g_hash_table_lookup(hash, key);
 
@@ -70,10 +70,11 @@ void incr(GHashTable* hash, gchar *key)
         gint *val1 = g_new(gint, 1);
         *val1 = 1;
         g_hash_table_insert(hash, key, val1);
+		return 0;
     } else {
         *val += 1;
-		g_free(key);
     }
+	return 1;	
 }
 
 int main(int argc, char** argv)
@@ -105,7 +106,9 @@ int main(int argc, char** argv)
 
         array = g_strsplit(line, " ", 0);
         for (int i=0; array[i] != NULL; i++) {
-            incr(hash, array[i]);
+            if(incr(hash, array[i])) {
+				g_free(array[i]);
+			}
 		}
     }
     fclose(fp);
@@ -121,8 +124,10 @@ int main(int argc, char** argv)
     g_sequence_foreach(seq, (GFunc) pair_printor, NULL);
 
     // try (unsuccessfully) to free everything
+	// This should delete all the keys, twice. Doesn't work.
 	g_hash_table_foreach_remove(hash, (GHRFunc) remove_key_value, NULL);
     g_hash_table_destroy(hash);
+	g_hash_table_unref(hash);
     g_sequence_free(seq);
 
     return 0;
